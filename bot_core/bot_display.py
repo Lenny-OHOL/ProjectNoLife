@@ -1,6 +1,6 @@
 import sys
 import time
-from bot_core.playerInfo import playerInfo as PI
+from bot_core.player_info import PlayerInfo as PI
 
 class BotDisplay:
     """

@@ -5,7 +5,7 @@ from pathlib import Path
 
 #My libraries
 from bot_core.server_connect import Server
-from bot_core.playerInfo import (playerInfo, rawInfo) 
+from bot_core.player_info import (PlayerInfo, RawInfo) 
 from bot_core.bot_display import BotDisplay
 
 # botMethods.objectId as objectId
@@ -13,14 +13,14 @@ from bot_core.bot_display import BotDisplay
 #non-compressed message types
 cmdBank = (b'ACCEPTED\n', b'AD\n', b'AP\n', b'BB\n', b'BW\n', b'CR\n', b'CS\n', b'CU\n', b'CX\n', b'DY\n', b'EX\n', b'FD\n', b'FL\n', b'FW\n', b'FX\n', b'GH\n', b'GM\n', b'GO\n', b'GV\n', b'HE\n', b'HL\n', b'HX\n', b'LN\n', b'LR\n', b'LS\n', b'MN\n', b'MS\n', b'MX\n', b'NM\n', b'OW\n', b'PE\n', b'PH\n', b'PJ\n', b'PM\n', b'PO\n', b'PS\n', b'PU\n', b'RA\n', b'RR\n', b'SD\n', b'SN\n', b'TS\n', b'VS\n', b'VU\n', b'WR\n')
 
-class botActions(Server, playerInfo, BotDisplay):
+class botActions(Server, PlayerInfo, BotDisplay):
     """
     The core bot utilities class a bot will need to handle server messages from an OHOL server. It coontains the following options:
     Server Message Decompression and Storage, Talking, BasicMovement, and player updates
     """
     def __init__(self, *args, show_display=True, **kwargs):
         Server.__init__(self, *args, **kwargs)
-        playerInfo.__init__(self)
+        PlayerInfo.__init__(self)
 
         self.messageBuffer = []
 
@@ -31,7 +31,7 @@ class botActions(Server, playerInfo, BotDisplay):
         self.map = {}
 
         #Stored Players
-        self.players: dict[int, rawInfo] = {}
+        self.players: dict[int, RawInfo] = {}
 
         #Message Feed that will be used by the BotDisplay
         #Note to future self: If works for right now, but is badly setup
@@ -196,7 +196,7 @@ class botActions(Server, playerInfo, BotDisplay):
                     if int(name[0]) in self.players:
                         self.players[int(name[0])].name = name[1]
                     else:
-                        self.players[int(name[0])] = rawInfo(name=name[1])
+                        self.players[int(name[0])] = RawInfo(name=name[1])
                 
                 if not self.name:
                     self.PlayerUpdate()
@@ -232,7 +232,7 @@ class botActions(Server, playerInfo, BotDisplay):
                     if lifeID in self.players:
                         self.players[lifeID].PU = playerUpdate[0:24]
                     else:
-                        self.players[lifeID] = rawInfo(PU=playerUpdate[0:24])
+                        self.players[lifeID] = RawInfo(PU=playerUpdate[0:24])
                     playerUpdate = playerUpdate[25:]
 
                     if playerUpdate:
