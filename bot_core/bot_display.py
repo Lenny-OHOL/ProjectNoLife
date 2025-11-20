@@ -1,8 +1,8 @@
 import sys
 import time
-from botMethods.playerInfo import playerInfo as PI
+from bot_core.playerInfo import playerInfo as PI
 
-class botDisplay:
+class BotDisplay:
     """
     Basic terminal GUI used to display the bot stats. It contains the functionality to display a single of multiple bots by simply adding player info
     """
@@ -24,7 +24,7 @@ class botDisplay:
         
 
     
-    def update(self):
+    def update_display(self):
         # Move cursor up 2 lines
         if self.firstUpdate:
             self.firstUpdate = False
@@ -80,9 +80,9 @@ if __name__ == "__main__":
     bot1.botID, bot1.name, bot1.food, bot1.foodCapacity, bot1.mothersName = 'Bot1', 'thomas', 6, 20, 'chelsea'
     bot2 = PI()
     bot2.botID, bot2.name, bot2.food, bot2.foodCapacity, bot2.mothersName, bot2.status = 'Bot2', 'clarence', 12, 20, 'chelsea', 'GHOST'
-    progress = botDisplay()
+    progress = BotDisplay()
     progress.addBot(bot1)
     progress.addBot(bot2)
     while True:
-        progress.update()
+        progress.update_display()
         time.sleep(0.05)

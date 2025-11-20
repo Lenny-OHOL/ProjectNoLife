@@ -1,4 +1,4 @@
-from botMethods.botActions import botActions
+from bot_core.botActions import botActions
 
 import time
 
@@ -22,11 +22,6 @@ def main():
 
     player = botActions(email, accountKey, tutorial_number=0)
     #player = botActions(email, accountKey, host='bigserver2.onehouronelife.com', tutorial_number)
-    player.start()
-
-    player.startDisplay()
-
-    #player.stopDisplay()
 
     player.basicAction('USE')
     time.sleep(2)
