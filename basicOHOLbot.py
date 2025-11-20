@@ -20,8 +20,8 @@ def main():
         return
 
 
-    #player = botActions(email, accountKey, tutorialNumber=0)
-    player = botActions(email, accountKey, host='bigserver2.onehouronelife.com', tutorialNumber=1)
+    player = botActions(email, accountKey, tutorial_number=0)
+    #player = botActions(email, accountKey, host='bigserver2.onehouronelife.com', tutorial_number)
     player.start()
 
     player.startDisplay()

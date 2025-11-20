@@ -4,16 +4,16 @@ from threading import Thread
 from pathlib import Path
 
 #My libraries
-import botMethods.ServerConnect as sc
-from botMethods.playerInfo import (playerInfo, rawInfo) 
-import botMethods.botDisplay as BD
+from bot_core.server_connect import Server
+from bot_core.playerInfo import (playerInfo, rawInfo) 
+import bot_core.botDisplay as BD
 
 # botMethods.objectId as objectId
 
 #non-compressed message types
 cmdBank = (b'ACCEPTED\n', b'AD\n', b'AP\n', b'BB\n', b'BW\n', b'CR\n', b'CS\n', b'CU\n', b'CX\n', b'DY\n', b'EX\n', b'FD\n', b'FL\n', b'FW\n', b'FX\n', b'GH\n', b'GM\n', b'GO\n', b'GV\n', b'HE\n', b'HL\n', b'HX\n', b'LN\n', b'LR\n', b'LS\n', b'MN\n', b'MS\n', b'MX\n', b'NM\n', b'OW\n', b'PE\n', b'PH\n', b'PJ\n', b'PM\n', b'PO\n', b'PS\n', b'PU\n', b'RA\n', b'RR\n', b'SD\n', b'SN\n', b'TS\n', b'VS\n', b'VU\n', b'WR\n')
 
-class botActions(sc.accountLogin, playerInfo):
+class botActions(Server, playerInfo):
     """
     The core bot utilities class a bot will need to handle server messages from an OHOL server. It coontains the following options:
     Server Message Decompression and Storage, Talking, BasicMovement, and player updates
@@ -60,6 +60,7 @@ class botActions(sc.accountLogin, playerInfo):
     def stop(self):
         self.working = False
         self.showDisplay = False
+        self.disconnect()
 
     def startDisplay(self):
         self.showDisplay = True
