@@ -20,8 +20,29 @@ def main():
         return
 
 
-    player = botActions(email, accountKey, tutorial_number=0)
+    player = botActions(email, accountKey, tutorial_number=0, show_display=True)
     #player = botActions(email, accountKey, host='bigserver2.onehouronelife.com', tutorial_number)
+
+    time.sleep(2)
+    player.BasicAction('move', 'down')
+    time.sleep(2)
+    player.BasicAction('move', 'down')
+    time.sleep(2)
+    player.BasicAction('move', 'up')
+    time.sleep(2)
+    player.BasicAction('move', 'up')
+    time.sleep(2)
+    player.BasicAction('move', 'left')
+    time.sleep(2)
+    player.BasicAction('move', 'right')
+
+
+
+
+
+
+
+    time.sleep(200000)
 
     player.basicAction('USE')
     time.sleep(2)

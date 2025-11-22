@@ -7,6 +7,7 @@ from pathlib import Path
 from bot_core.server_connect import Server
 from bot_core.player_info import (PlayerInfo, RawInfo) 
 from bot_core.bot_display import BotDisplay
+from bot_core.basic_action import BasicAction
 
 # botMethods.objectId as objectId
 
@@ -42,6 +43,9 @@ class botActions(Server, PlayerInfo, BotDisplay):
 
         #Used for individualized bot display
         self.show_display = show_display
+
+        #
+        self.BasicAction = BasicAction(self, self, self.messageFeed)
 
         #Starting Bot
         self.start()
@@ -92,6 +96,10 @@ class botActions(Server, PlayerInfo, BotDisplay):
     #Note: Message must all be in caps, or it will not send
     def Talk(self, message):
         return self.sendToServer(message)
+    
+    def action(self, command, direction='center'):
+          #print(self.BasicAction(command, direction))
+          self.messageFeed.append(self.sendToServer(self.BasicAction(command, direction)))
 
     #Simple Left, Right, Up, Down Bot Movement
     def basicMovement(self, direction=''):
