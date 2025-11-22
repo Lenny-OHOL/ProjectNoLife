@@ -23,7 +23,6 @@ def main():
     player = botActions(email, accountKey, tutorial_number=0, show_display=True)
     #player = botActions(email, accountKey, host='bigserver2.onehouronelife.com', tutorial_number)
 
-    time.sleep(2)
     player.BasicAction('move', 'down')
     time.sleep(2)
     player.BasicAction('move', 'down')
@@ -36,7 +35,7 @@ def main():
     time.sleep(2)
     player.BasicAction('move', 'right')
 
-
+    return
 
 
 

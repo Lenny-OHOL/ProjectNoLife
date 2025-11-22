@@ -29,8 +29,7 @@ class BasicAction:
 
 
     def move(self, direction):
-        print(direction)
-        self.messageFeed.append(self.Server.sendToServer(f'MOVE {self.player_info.x} {self.player_info.y} @{self.player_info.moveStep} {BasicAction.directions[direction]}#'))
+        self.Server(f'MOVE {self.player_info.x} {self.player_info.y} @{self.player_info.moveStep} {BasicAction.directions[direction]}#')
     
     def action_not_found(self):
         self.messageFeed.append('Action not found')

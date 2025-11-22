@@ -14,13 +14,12 @@ from bot_core.basic_action import BasicAction
 #non-compressed message types
 cmdBank = (b'ACCEPTED\n', b'AD\n', b'AP\n', b'BB\n', b'BW\n', b'CR\n', b'CS\n', b'CU\n', b'CX\n', b'DY\n', b'EX\n', b'FD\n', b'FL\n', b'FW\n', b'FX\n', b'GH\n', b'GM\n', b'GO\n', b'GV\n', b'HE\n', b'HL\n', b'HX\n', b'LN\n', b'LR\n', b'LS\n', b'MN\n', b'MS\n', b'MX\n', b'NM\n', b'OW\n', b'PE\n', b'PH\n', b'PJ\n', b'PM\n', b'PO\n', b'PS\n', b'PU\n', b'RA\n', b'RR\n', b'SD\n', b'SN\n', b'TS\n', b'VS\n', b'VU\n', b'WR\n')
 
-class botActions(Server, PlayerInfo, BotDisplay):
+class botActions(PlayerInfo, BotDisplay):
     """
     The core bot utilities class a bot will need to handle server messages from an OHOL server. It coontains the following options:
     Server Message Decompression and Storage, Talking, BasicMovement, and player updates
     """
     def __init__(self, *args, show_display=True, **kwargs):
-        Server.__init__(self, *args, **kwargs)
         PlayerInfo.__init__(self)
 
         self.messageBuffer = []
@@ -44,35 +43,33 @@ class botActions(Server, PlayerInfo, BotDisplay):
         #Used for individualized bot display
         self.show_display = show_display
 
-        #
-        self.BasicAction = BasicAction(self, self, self.messageFeed)
-
         #Starting Bot
+        self.Server = Server(*args, **kwargs, messageBuffer=self.messageBuffer, messageFeed=self.messageFeed)
         self.start()
+        #Basic Actions
+        self.BasicAction = BasicAction(self.Server, self, self.messageFeed)
 
         if show_display:
             t2 = Thread(target=self._update_display)
             t2.start()
 
     def start(self):
-        self.connect()
-        t = Thread(target=self.recvBytes)
+        t = Thread(target=self.manage_bytes)
         t.start()
 
-        #bot names itself
-        self.Talk('BABY 0 0#')
-        time.sleep(2)
 
         #Gathering LifeId
         self.messageFeed.append('forcing PU')
-        self.messageFeed.append(self.Talk('MOTH 0 0#'))
-        
-        self.Talk('SAY 0 0 I AM TEST#')
+        self.Server('MOTH 0 0#')
+
+        #naming itself
+        self.Server('SAY 0 0 I AM TEST#')
 
     def stop(self):
         self.working = False
         self.show_display = False
-        self.disconnect()
+        self.Server.disconnect()
+        print('finished stopping sequence')
 
     def stop_display(self):
         self.showDisplay = False
@@ -82,11 +79,10 @@ class botActions(Server, PlayerInfo, BotDisplay):
             time.sleep(1)
             self.update_display()       
 
-    def recvBytes(self):
+    def manage_bytes(self):
         while self.working:
 
-            self.messageBuffer.append(self.socket.recv(4096))
-
+            self.Server._recieve_bytes()
 
             #if theres a message needing to be processed
             if self.messageBuffer:
@@ -97,10 +93,6 @@ class botActions(Server, PlayerInfo, BotDisplay):
     def Talk(self, message):
         return self.sendToServer(message)
     
-    def action(self, command, direction='center'):
-          #print(self.BasicAction(command, direction))
-          self.messageFeed.append(self.sendToServer(self.BasicAction(command, direction)))
-
     #Simple Left, Right, Up, Down Bot Movement
     def basicMovement(self, direction=''):
         if direction == 'Left':

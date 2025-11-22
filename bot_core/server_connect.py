@@ -10,14 +10,18 @@ class Server:
     A simple class designed to connect to any OHOL servers. 
     By default, it will connect to servers that are hosted locally but you can initialize it to connect to Big Server 2
     """
-    def __init__(self,  email, key, host='localhost', port=8005, tutorial_number=1, server_password = 'testPassword'):
+    def __init__(self,  email, key, host='localhost', port=8005, tutorial_number=1, server_password = 'testPassword', messageBuffer = [], messageFeed = []):
         #Server Connection
         self.host = host
         self.port = port
         self.sequence_number = ''
         self.tutorial_number = tutorial_number #0 for main spawn, 1 for tutorial 1, 2 for tutorial 2
         self.server_password = server_password #BS2 uses 'testPassword' for its password
+        self.message_buffer = messageBuffer
+        self.message_feed = messageFeed
 
+        #recieve byte control
+        self.working = True
 
         #account information
         self.email = email
@@ -25,6 +29,10 @@ class Server:
 
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
+        self.connect()
+
+    def __call__(self, message):
+        self._send_to_server_and_feed(message)
 
     def _sha1(self, message):
         hashed = hmac.new(message.encode(), self.sequence_number.encode(), hashlib.sha1)
@@ -74,3 +82,9 @@ class Server:
     def sendToServer(self, message):
         self.socket.send(message.encode('utf-8'))
         return message
+    
+    def _send_to_server_and_feed(self, message):
+        self.message_feed.append(self.sendToServer(message))
+
+    def _recieve_bytes(self):
+            self.message_buffer.append(self.socket.recv(4096))
