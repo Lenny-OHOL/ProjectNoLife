@@ -45,9 +45,9 @@ class botActions(PlayerInfo, BotDisplay):
 
         #Starting Bot
         self.Server = Server(*args, **kwargs, messageBuffer=self.messageBuffer, messageFeed=self.messageFeed)
-        self.start()
         #Basic Actions
         self.BasicAction = BasicAction(self.Server, self, self.messageFeed)
+        self.start()
 
         if show_display:
             t2 = Thread(target=self._update_display)
@@ -60,10 +60,7 @@ class botActions(PlayerInfo, BotDisplay):
 
         #Gathering LifeId
         self.messageFeed.append('forcing PU')
-        self.Server('MOTH 0 0#')
-
-        #naming itself
-        self.Server('SAY 0 0 I AM TEST#')
+        self.BasicAction('mother')
 
     def stop(self):
         self.working = False
@@ -87,43 +84,6 @@ class botActions(PlayerInfo, BotDisplay):
             #if theres a message needing to be processed
             if self.messageBuffer:
                 self.messageDecompression(self.messageBuffer)
-
-    #Note to self: Make sure all commands end with an pound key!!!
-    #Note: Message must all be in caps, or it will not send
-    def Talk(self, message):
-        return self.sendToServer(message)
-    
-    #Simple Left, Right, Up, Down Bot Movement
-    def basicMovement(self, direction=''):
-        if direction == 'Left':
-            moveCMD = f'MOVE {self.x} {self.y} @{self.moveStep} -1 0#'
-            self.messageFeed.append(self.sendToServer(moveCMD))
-        elif direction == 'Right':
-            moveCMD = f'MOVE {self.x} {self.y} @{self.moveStep} 1 0#'
-            self.messageFeed.append(self.sendToServer(moveCMD))
-        elif direction == 'Up':
-            moveCMD = f'MOVE {self.x} {self.y} @{self.moveStep} 0 1#'
-            self.messageFeed.append(self.sendToServer(moveCMD))
-        elif direction == 'Down':
-            moveCMD = f'MOVE {self.x} {self.y} @{self.moveStep} 0 -1#'
-            self.messageFeed.append(self.sendToServer(moveCMD))
-
-    #THIS NEEDS TO BE FIXED TO ADJUST FOR ALL OF THE i PARAMATERS. IF WORKS JUST ENOUGH FOR BASIC STUFF
-    def basicAction(self, action, x=None, y=None):
-        if action == 'SELF' or action == 'DROP':
-            x, y = self.x, self.y
-
-            actionCMD = f'{action} {x} {y} -1#'
-
-            self.messageFeed.append(self.sendToServer(actionCMD))
-        elif action == 'USE':
-            x, y = self.x, self.y
-
-            actionCMD = f'{action} 0 0#'
-
-            self.messageFeed.append(self.sendToServer(actionCMD))
-        else:
-            self.messageFeed.append('Incorrect action type')
 
 
     def PlayerUpdate(self) -> None:

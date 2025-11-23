@@ -23,6 +23,38 @@ def main():
     player = botActions(email, accountKey, tutorial_number=0, show_display=True)
     #player = botActions(email, accountKey, host='bigserver2.onehouronelife.com', tutorial_number)
 
+    time.sleep(2)
+    player.BasicAction('use')
+    time.sleep(2)
+    player.BasicAction('drop')
+
+
+    time.sleep(20000)
+    player.BasicAction('use')
+    time.sleep(2)
+    player.BasicAction('self')
+    time.sleep
+    player.BasicAction('use', 'down')
+    time.sleep(2)
+    player.BasicAction('self', '4')
+    time.sleep(2)
+    player.BasicAction('use', 'right')
+    time.sleep(2)
+    player.BasicAction('drop', '4')
+
+
+    time.sleep(20000)
+    player.BasicAction('self', '2')
+    time.sleep(2)
+    player.BasicAction('drop')
+    time.sleep(2)
+    player.BasicAction('self', '3')
+    
+    time.sleep(2)
+    player.BasicAction('drop')
+    time.sleep(2)
+    player.BasicAction('say', 'i am test')
+    time.sleep(2)
     player.BasicAction('move', 'down')
     time.sleep(2)
     player.BasicAction('move', 'down')
@@ -34,6 +66,22 @@ def main():
     player.BasicAction('move', 'left')
     time.sleep(2)
     player.BasicAction('move', 'right')
+    time.sleep(2)
+    player.BasicAction('move', 'down')
+    time.sleep(2)
+    player.BasicAction('use', 'center')
+    time.sleep(2)
+    player.BasicAction('self')
+    time.sleep(2)
+    time.sleep(3000)
+    player.BasicAction('move', 'down')
+    time.sleep(2)
+    player.BasicAction('move', 'down')
+    time.sleep(2)
+    player.BasicAction('use')
+    time.sleep(2)
+    player.BasicAction('self')
+    time.sleep(2)
 
     return
 
