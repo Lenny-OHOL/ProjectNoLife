@@ -4,21 +4,31 @@ import socket
 import hmac
 import hashlib
 
+from bot_core.message_manager import MessageManager
+from bot_core.player_info import PlayerInfo, RawInfo
 
-class Server:
+
+class Server(MessageManager):
     """
     A simple class designed to connect to any OHOL servers. 
     By default, it will connect to servers that are hosted locally but you can initialize it to connect to Big Server 2
     """
-    def __init__(self,  email, key, host='localhost', port=8005, tutorial_number=1, server_password = 'testPassword', messageBuffer = [], messageFeed = []):
+    def __init__(self,  email, key, host='localhost', port=8005, tutorial_number=1, server_password = 'testPassword', PlayerInfo:PlayerInfo = PlayerInfo()):
+        
+        self.server_message_buffer = []
+        #Message Feed that will be used by the BotDisplay
+        #Note to future self: If works for right now, but is badly setup
+        self.message_feed = []
+
+        MessageManager.__init__(self, PlayerInfo, self.server_message_buffer, self.message_feed)
+        
         #Server Connection
         self.host = host
         self.port = port
         self.sequence_number = ''
         self.tutorial_number = tutorial_number #0 for main spawn, 1 for tutorial 1, 2 for tutorial 2
         self.server_password = server_password #BS2 uses 'testPassword' for its password
-        self.message_buffer = messageBuffer
-        self.message_feed = messageFeed
+
 
         #recieve byte control
         self.working = True
@@ -87,4 +97,9 @@ class Server:
         self.message_feed.append(self.sendToServer(message))
 
     def _recieve_bytes(self):
-            self.message_buffer.append(self.socket.recv(4096))
+            self.server_message_buffer.append(self.socket.recv(4096))
+
+            if self.server_message_buffer:
+                #print(self.server_message_buffer)
+                #print(self.players.values())
+                self.messageDecompression(self.server_message_buffer)

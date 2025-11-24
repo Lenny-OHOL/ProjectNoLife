@@ -22,10 +22,10 @@ class BasicAction:
         'right':'1 0',
         'down':'0 -1'
     }
-    def __init__(self, Server:Server, player_info, messageFeed):
+    def __init__(self, Server:Server, player_info:PlayerInfo, message_feed):
         self.Server = Server
-        self.player_info:PlayerInfo = player_info
-        self.messageFeed = messageFeed
+        self.player_info = player_info
+        self.message_feed = message_feed
 
     def __call__(self, command, *args, **kwargs):
         if command in BasicAction.actions:
@@ -77,7 +77,7 @@ class BasicAction:
         self.Server(f'SAY {self.player_info.x} {self.player_info.y} {message.upper()}#')
 
     def action_not_found(self):
-        self.messageFeed.append('Action not found')
+        self.message_feed.append('Action not found')
 
 
 

@@ -6,7 +6,7 @@ class BotDisplay:
     """
     Basic terminal GUI used to display the bot stats. It contains the functionality to display a single of multiple bots by simply adding player info
     """
-    def __init__(self, width=50, leading_whitespace=7, args=6, messageFeed = []):
+    def __init__(self, width=50, leading_whitespace=7, args=6, message_feed = []):
         self.width = width
         self.inside = width-2
         self.whitespace = leading_whitespace
@@ -16,7 +16,7 @@ class BotDisplay:
 
         self.botList: list[PI] = []
 
-        self.messageFeed = messageFeed
+        self.message_feed = message_feed
         self.queueFeed = ['','','','']
 
     def addBot(self, PI):
@@ -50,16 +50,16 @@ class BotDisplay:
             #bot Status
             sys.stdout.write('│%s%s│\n' % (' '*self.whitespace + f'Status:{i.status}', ' '*(self.inside - len(' '*self.whitespace + f'Status:{i.status}')))) 
             #food
-            sys.stdout.write('│%s%s│\n' % (' '*self.whitespace + f'Food:{i.food}/{i.foodCapacity}', ' '*(self.inside - len(' '*self.whitespace + f'Food:{i.food}/{i.foodCapacity}'))))
+            sys.stdout.write('│%s%s│\n' % (' '*self.whitespace + f'Food:{i.food}/{i.food_capacity}', ' '*(self.inside - len(' '*self.whitespace + f'Food:{i.food}/{i.food_capacity}'))))
             #sys.stdout.write('│%s%s│\n' % (' '*self.whitespace + f'Food:{i.food}', ' '*(self.inside - len(' '*self.whitespace + f'Food:{i.food}'))))
             #mothersname
-            sys.stdout.write('│%s%s│\n' % (' '*self.whitespace + f'Mother:{i.mothersName}', ' '*(self.inside - len(' '*self.whitespace + f'Mother:{i.mothersName}'))))            
+            sys.stdout.write('│%s%s│\n' % (' '*self.whitespace + f'Mother:{i.mothers_name}', ' '*(self.inside - len(' '*self.whitespace + f'Mother:{i.mothers_name}'))))            
             
             index += 1
 
-        while self.messageFeed:
+        while self.message_feed:
             self.queueFeed.pop(0)
-            self.queueFeed.append(f'{time.strftime("%H:%M:%S")}: {self.messageFeed.pop(0)}')
+            self.queueFeed.append(f'{time.strftime("%H:%M:%S")}: {self.message_feed.pop(0)}')
         
         sys.stdout.write('├%s┤\n' % ('─'*self.inside))
         sys.stdout.write('│%s%s│\n' % ('Message Feed:', ' '*(self.inside - len('Message Feed:'))))
@@ -77,9 +77,9 @@ class BotDisplay:
 if __name__ == "__main__":
 # Example
     bot1 = PI()
-    bot1.botID, bot1.name, bot1.food, bot1.foodCapacity, bot1.mothersName = 'Bot1', 'thomas', 6, 20, 'chelsea'
+    bot1.botID, bot1.name, bot1.food, bot1.food_capacity, bot1.mothers_name = 'Bot1', 'thomas', 6, 20, 'chelsea'
     bot2 = PI()
-    bot2.botID, bot2.name, bot2.food, bot2.foodCapacity, bot2.mothersName, bot2.status = 'Bot2', 'clarence', 12, 20, 'chelsea', 'GHOST'
+    bot2.botID, bot2.name, bot2.food, bot2.food_capacity, bot2.mothers_name, bot2.status = 'Bot2', 'clarence', 12, 20, 'chelsea', 'GHOST'
     progress = BotDisplay()
     progress.addBot(bot1)
     progress.addBot(bot2)
